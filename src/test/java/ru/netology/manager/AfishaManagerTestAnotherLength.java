@@ -2,12 +2,21 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Afisha;
 import ru.netology.manager.AfishaManager;
+import ru.netology.repository.AfishaRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class AfishaManagerTestAnotherLength {
+    @Mock
+    private AfishaRepository repository;
+    @InjectMocks
     private AfishaManager manager;
     private Afisha first = new Afisha(1,1,"Bloodshot",1);
     private Afisha second = new Afisha(2,2,"Vpered",2);
@@ -22,7 +31,7 @@ class AfishaManagerTestAnotherLength {
 
     @BeforeEach
     void prepareManager () {
-        manager = new AfishaManager(5);
+        manager = new AfishaManager(repository,5);
 
         manager.addMovie(first);
         manager.addMovie(second);

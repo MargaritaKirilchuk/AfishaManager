@@ -1,18 +1,24 @@
 package ru.netology.manager;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.netology.domain.Afisha;
+import ru.netology.repository.AfishaRepository;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class AfishaManager {
     private Afisha[] movies = new Afisha [0];
+    private AfishaRepository repository;
     private int lengthOfAfisha = 10;
 
-    public AfishaManager(int lengthOfAfisha) {
+    public AfishaManager(AfishaRepository repository) {
+        this.repository = repository;
+    }
+
+    public AfishaManager (AfishaRepository repository, int lengthOfAfisha) {
+        this.repository = repository;
         this.lengthOfAfisha = lengthOfAfisha;
     }
 
@@ -38,4 +44,25 @@ public class AfishaManager {
         }
         return result;
     }
+
+    public void add (Afisha movie){
+        repository.save(movie);
+    }
+
+    public void removeById (int id){
+        repository.removeById (id);
+    }
+
+    public void findById (int id){
+        repository.findById(id);
+    }
+
+    public void removeAll (){
+        repository.removeAll();
+    }
+
+    public void findAll (){
+        repository.findAll();
+    }
+
 }

@@ -2,12 +2,22 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.netology.domain.Afisha;
 import ru.netology.manager.AfishaManager;
+import ru.netology.repository.AfishaRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AfishaManagerTestNotEmpty {
+    @Mock
+    private AfishaRepository repository;
+    @InjectMocks
     private AfishaManager manager;
     private Afisha first = new Afisha(1,1,"Bloodshot",1);
     private Afisha second = new Afisha(2,2,"Vpered",2);
@@ -23,7 +33,7 @@ class AfishaManagerTestNotEmpty {
 
     @BeforeEach
     void prepareManager () {
-        manager = new AfishaManager(10);
+        manager = new AfishaManager (repository, 11);
 
         manager.addMovie(first);
         manager.addMovie(second);
@@ -38,16 +48,20 @@ class AfishaManagerTestNotEmpty {
     }
 
     @Test
-    void addMovie() {
+    void addMovie () {
         eleventh = new Afisha(11,11,"Ice2",11);
 
-        manager.addMovie(eleventh);
+        Afisha[] returned = new Afisha[] {first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
+        doReturn(returned).when(repository).findAll();
+        doNothing().when(repository).save(eleventh);
 
+        manager.addMovie(eleventh);
         Afisha[] actual = manager.showAfisha();
         Afisha[] expected = new Afisha[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
 
         assertArrayEquals (expected, actual);
 
+        verify(repository).save(eleventh);
 
     }
 
@@ -55,7 +69,7 @@ class AfishaManagerTestNotEmpty {
     void MovieList(){
 
         Afisha[] actual = manager.showAfisha();
-        Afisha[] expected = new Afisha[] {tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        Afisha[] expected = new Afisha[] {ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
 
         assertArrayEquals (expected, actual);
     }
