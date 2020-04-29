@@ -33,30 +33,30 @@ class AfishaManagerTestNotEmpty {
 
     @BeforeEach
     void prepareManager () {
-        manager = new AfishaManager (repository, 11);
+        manager = new AfishaManager (repository, 10);
 
-        manager.addMovie(first);
-        manager.addMovie(second);
-        manager.addMovie(third);
-        manager.addMovie(fourth);
-        manager.addMovie(fifth);
-        manager.addMovie(sixth);
-        manager.addMovie(seventh);
-        manager.addMovie(eighth);
-        manager.addMovie(ninth);
-        manager.addMovie(tenth);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        manager.add(fifth);
+        manager.add(sixth);
+        manager.add(seventh);
+        manager.add(eighth);
+        manager.add(ninth);
+        manager.add(tenth);
     }
 
     @Test
     void addMovie () {
         eleventh = new Afisha(11,11,"Ice2",11);
 
-        Afisha[] returned = new Afisha[] {first, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth, eleventh};
+        Afisha[] returned = new Afisha[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
         doReturn(returned).when(repository).findAll();
         doNothing().when(repository).save(eleventh);
 
-        manager.addMovie(eleventh);
-        Afisha[] actual = manager.showAfisha();
+        manager.add(eleventh);
+        Afisha[] actual = repository.findAll();
         Afisha[] expected = new Afisha[] {eleventh, tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
 
         assertArrayEquals (expected, actual);
@@ -68,10 +68,15 @@ class AfishaManagerTestNotEmpty {
     @Test
     void MovieList(){
 
-        Afisha[] actual = manager.showAfisha();
-        Afisha[] expected = new Afisha[] {ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        Afisha[] returned = new Afisha[] {tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
+        doReturn(returned).when(repository).findAll();
+
+        Afisha[] actual = repository.findAll();
+        Afisha[] expected = new Afisha[] {tenth, ninth, eighth, seventh, sixth, fifth, fourth, third, second, first};
 
         assertArrayEquals (expected, actual);
+
+        verify(repository).findAll();
     }
 
 

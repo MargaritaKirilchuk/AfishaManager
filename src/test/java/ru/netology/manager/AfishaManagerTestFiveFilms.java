@@ -10,6 +10,8 @@ import ru.netology.domain.Afisha;
 import ru.netology.repository.AfishaRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AfishaManagerTestLessThanFive {
@@ -32,26 +34,27 @@ class AfishaManagerTestLessThanFive {
     void prepareManager () {
         manager = new AfishaManager(repository,5);
 
-        manager.addMovie(first);
-        manager.addMovie(second);
-        manager.addMovie(third);
-        manager.addMovie(fourth);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
 
     }
 
     @Test
     void shouldShowFilmsLessThanFive (){
-        Afisha[] actual = manager.showAfisha();
+
+        Afisha[] returned = new Afisha[] {fourth, third, second, first};
+        doReturn(returned).when(repository).findAll();
+
+        Afisha[] actual = repository.findAll();
         Afisha[] expected = new Afisha[] {fourth, third, second, first};
 
         assertArrayEquals (expected, actual);
+
+        verify(repository).findAll();
     }
 
-    @Test
-    void shouldShowFiveFilms (){
-
-
-    }
 
 
 }

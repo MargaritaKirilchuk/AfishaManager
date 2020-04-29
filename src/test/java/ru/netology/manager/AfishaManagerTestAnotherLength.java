@@ -11,6 +11,8 @@ import ru.netology.manager.AfishaManager;
 import ru.netology.repository.AfishaRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AfishaManagerTestAnotherLength {
@@ -33,31 +35,36 @@ class AfishaManagerTestAnotherLength {
     void prepareManager () {
         manager = new AfishaManager(repository,5);
 
-        manager.addMovie(first);
-        manager.addMovie(second);
-        manager.addMovie(third);
-        manager.addMovie(fourth);
-        manager.addMovie(fifth);
-        manager.addMovie(sixth);
-        manager.addMovie(seventh);
-        manager.addMovie(eighth);
-        manager.addMovie(ninth);
-        manager.addMovie(tenth);
+        manager.add(first);
+        manager.add(second);
+        manager.add(third);
+        manager.add(fourth);
+        manager.add(fifth);
+        manager.add(sixth);
+        manager.add(seventh);
+        manager.add(eighth);
+        manager.add(ninth);
+        manager.add(tenth);
     }
 
     @Test
     void ShouldShowLastFiveFilms (){
-        manager.addMovie(fifth);
-        manager.addMovie(sixth);
-        manager.addMovie(seventh);
-        manager.addMovie(eighth);
-        manager.addMovie(ninth);
-        manager.addMovie(tenth);
+        manager.add(fifth);
+        manager.add(sixth);
+        manager.add(seventh);
+        manager.add(eighth);
+        manager.add(ninth);
+        manager.add(tenth);
 
-        Afisha[] actual = manager.showAfisha();
+        Afisha[] returned = new Afisha[] {tenth, ninth, eighth, seventh, sixth};
+        doReturn(returned).when(repository).findAll();
+
+        Afisha[] actual = repository.findAll();
         Afisha[] expected = new Afisha[] {tenth, ninth, eighth, seventh, sixth};
 
         assertArrayEquals (expected, actual);
+
+        verify(repository).findAll();
     }
 
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Afisha;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AfishaRepositoryTest {
     private AfishaRepository repository;
@@ -61,10 +62,10 @@ class AfishaRepositoryTest {
     void shouldFindIfExist (){
         repository.findById(2);
 
-        Afisha[] actual = repository.findAll();
-        Afisha[] expected = new Afisha[] {second};
+        Afisha expected = new Afisha(2,2,"Vpered",2);
+        Afisha actual = repository.findById(2);
 
-        assertArrayEquals (expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test

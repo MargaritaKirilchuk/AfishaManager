@@ -11,6 +11,7 @@ import ru.netology.manager.AfishaManager;
 import ru.netology.repository.AfishaRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AfishaManagerTestWithOneMovie {
@@ -35,27 +36,38 @@ class AfishaManagerTestWithOneMovie {
         manager = new AfishaManager(repository,10);
         first = new Afisha(1,1,"Bloodshot",1);
 
-        manager.addMovie(first);
+        manager.add(first);
     }
 
     @Test
     void addMovie() {
         second = new Afisha(2,2,"Vpered",2);
 
-        manager.addMovie(second);
+        Afisha[] returned = new Afisha[] {second, first};
+        doReturn(returned).when(repository).findAll();
+        doNothing().when(repository).save(second);
 
-        Afisha[] actual = manager.showAfisha();
+        manager.add(second);
+
+        Afisha[] actual = repository.findAll();
         Afisha[] expected = new Afisha[] {second, first};
 
         assertArrayEquals (expected, actual);
+
+        verify(repository).save(second);
     }
 
     @Test
     void MovieList() {
 
-        Afisha[] actual = manager.showAfisha();
+        Afisha[] returned = new Afisha[] {first};
+        doReturn(returned).when(repository).findAll();
+
+        Afisha[] actual = repository.findAll();
         Afisha[] expected = new Afisha[]{first};
 
         assertArrayEquals(expected, actual);
+
+        verify(repository).findAll();
     }
 }
