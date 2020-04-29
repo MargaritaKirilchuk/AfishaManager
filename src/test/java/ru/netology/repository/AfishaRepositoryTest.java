@@ -62,7 +62,7 @@ class AfishaRepositoryTest {
     void shouldFindIfExist (){
         repository.findById(2);
 
-        Afisha expected = new Afisha(2,2,"Vpered",2);
+        Afisha expected = second;
         Afisha actual = repository.findById(2);
 
         assertEquals(expected, actual);
